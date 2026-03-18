@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mission-status-api
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/your-group/secure-eks-platform.git
+    targetRevision: main
+    path: helm/mission-status-api
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mission-status
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

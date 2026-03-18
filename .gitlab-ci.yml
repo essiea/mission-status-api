@@ -1,0 +1,131 @@
+stages:
+  - lint
+  - test
+  - sast
+  - terraform
+  - build
+  - scan
+  - push
+  - deploy
+
+variables:
+  AWS_DEFAULT_REGION: us-east-1
+  TF_ROOT: terraform
+  APP_ROOT: app
+  HELM_VALUES_FILE: helm/mission-status-api/values.yaml
+  IMAGE_REPO: mission-status-api
+  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  DOCKER_TLS_CERTDIR: "/certs"
+
+.default_python_job: &default_python_job
+  image: python:3.11
+  before_script:
+    - python --version
+    - pip install --upgrade pip
+
+lint:
+  stage: lint
+  <<: *default_python_job
+  script:
+    - pip install black flake8
+    - black --check $APP_ROOT
+    - flake8 $APP_ROOT --max-line-length=100
+
+unit_test:
+  stage: test
+  <<: *default_python_job
+  script:
+    - pip install -r $APP_ROOT/requirements.txt
+    - export PYTHONPATH=$APP_ROOT
+    - pytest $APP_ROOT/tests -v
+
+bandit_scan:
+  stage: sast
+  <<: *default_python_job
+  script:
+    - pip install bandit
+    - bandit -r $APP_ROOT -x $APP_ROOT/tests
+
+terraform_validate:
+  stage: terraform
+  image: hashicorp/terraform:1.6.6
+  script:
+    - cd $TF_ROOT
+    - terraform init -backend=false
+    - terraform fmt -check -recursive
+    - terraform validate
+
+checkov_scan:
+  stage: terraform
+  image: bridgecrew/checkov:latest
+  script:
+    - checkov -d $TF_ROOT --quiet
+
+helm_lint:
+  stage: terraform
+  image: alpine/helm:3.16.1
+  script:
+    - helm lint helm/mission-status-api
+
+build_image:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  script:
+    - docker build -t $IMAGE_REPO:$IMAGE_TAG $APP_ROOT
+    - docker save $IMAGE_REPO:$IMAGE_TAG -o image.tar
+  artifacts:
+    paths:
+      - image.tar
+    expire_in: 1 hour
+
+trivy_image_scan:
+  stage: scan
+  image: aquasec/trivy:latest
+  dependencies:
+    - build_image
+  script:
+    - trivy image --input image.tar --exit-code 1 --severity HIGH,CRITICAL
+
+push_to_ecr:
+  stage: push
+  image: amazon/aws-cli:2.17.30
+  services:
+    - docker:24-dind
+  dependencies:
+    - build_image
+  before_script:
+    - yum install -y tar gzip >/dev/null 2>&1 || true
+  script:
+    - aws ecr describe-repositories --repository-names $IMAGE_REPO >/dev/null 2>&1 || aws ecr create-repository --repository-name $IMAGE_REPO
+    - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+    - ECR_URI=$ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+    - docker load -i image.tar
+    - docker tag $IMAGE_REPO:$IMAGE_TAG $ECR_URI:$IMAGE_TAG
+    - docker push $ECR_URI:$IMAGE_TAG
+    - echo "ECR_URI=$ECR_URI" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
+update_helm_tag:
+  stage: deploy
+  image: alpine:3.20
+  needs:
+    - push_to_ecr
+  before_script:
+    - apk add --no-cache git yq
+  script:
+    - yq -i '.image.repository = strenv(ECR_URI)' $HELM_VALUES_FILE
+    - yq -i '.image.tag = strenv(IMAGE_TAG)' $HELM_VALUES_FILE
+    - yq -i '.env.APP_VERSION = strenv(IMAGE_TAG)' $HELM_VALUES_FILE
+    - git config --global user.email "gitlab-ci@example.com"
+    - git config --global user.name "gitlab-ci"
+    - git add $HELM_VALUES_FILE
+    - git commit -m "Update Helm image tag to $IMAGE_TAG" || echo "No changes to commit"
+    - git push https://oauth2:${GITLAB_TOKEN}@gitlab.com/your-group/secure-eks-platform.git HEAD:$CI_COMMIT_REF_NAME
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
