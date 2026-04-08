@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab.com/your-group/secure-eks-platform.git
+    repoURL: https://github.com/essiea/mission-status-api.git
     targetRevision: main
     path: helm/mission-status-api
   destination:

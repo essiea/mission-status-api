@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/mission-status-api
+  repository: 163895578832.dkr.ecr.us-east-1.amazonaws.com/mission-status-api-dev
   tag: latest
   pullPolicy: IfNotPresent
 
