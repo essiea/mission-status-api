@@ -38,10 +38,10 @@ jobs:
           pip install black flake8 pytest bandit
 
       - name: Black format check
-        run: black --check $APP_ROOT
+        run: black --check app/main.py app/tests
 
       - name: Flake8 lint
-        run: flake8 $APP_ROOT --max-line-length=100
+        run: flake8 app/main.py app/tests --max-line-length=100
 
       - name: Pytest
         env:

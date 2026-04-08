@@ -5,3 +5,8 @@ crash.log
 *.tfvars
 *.tfvars.json
 .terraform.lock.hcl
+venv/
+app/venv/
+.venv/
+__pycache__/
+.pytest_cache/
