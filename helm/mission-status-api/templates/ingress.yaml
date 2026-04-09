@@ -17,7 +17,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: mission-status-api-mission-status-api
+                name: mission-status-api
                 port:
                   number: {{ $.Values.service.port }}
 {{- end }}
