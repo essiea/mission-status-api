@@ -4,7 +4,7 @@ image:
   tag: "8e4c040"
   pullPolicy: IfNotPresent
 service:
-  type: ClusterIP
+  type: LoadBalancer 
   port: 80
   targetPort: 8080
 resources:
@@ -29,3 +29,8 @@ ingress:
 serviceAccount:
   create: true
   name: ""
+<<<<<<< HEAD
+=======
+
+fullnameOverride: mission-status-api
+>>>>>>> bda19ae (Expose mission-status-api with LoadBalancer service)
