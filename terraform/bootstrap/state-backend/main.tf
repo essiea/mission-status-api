@@ -19,7 +19,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state_e
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.s3.arn
     }
   }
 }
@@ -33,8 +34,28 @@ resource "aws_s3_bucket_public_access_block" "block" {
   restrict_public_buckets = true
 }
 
+# ✅ Lifecycle (fixes CKV2_AWS_61)
+resource "aws_s3_bucket_lifecycle_configuration" "lifecycle" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  rule {
+    id     = "cleanup"
+    status = "Enabled"
+
+    expiration {
+      days = 365
+    }
+  }
+}
+
 resource "aws_ecr_repository" "app" {
-  name = "${var.project_name}-repo"
+  name                 = "${var.project_name}-repo"
+  image_tag_mutability = "IMMUTABLE" # ✅ ADD THIS
+
+  encryption_configuration {
+    encryption_type = "KMS" # ✅ ADD THIS
+  }
+
   image_scanning_configuration {
     scan_on_push = true
   }
@@ -51,7 +72,12 @@ resource "aws_dynamodb_table" "terraform_locks" {
   }
 
   server_side_encryption {
-    enabled = true
+    enabled     = true
+    kms_key_arn = aws_kms_key.dynamodb.arn
+  }
+
+  resource "aws_kms_key" "dynamodb" {
+    description = "KMS key for DynamoDB Terraform lock table"
   }
 
   point_in_time_recovery {
