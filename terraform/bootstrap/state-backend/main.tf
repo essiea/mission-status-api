@@ -42,6 +42,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "lifecycle" {
     id     = "cleanup"
     status = "Enabled"
 
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+
     expiration {
       days = 365
     }

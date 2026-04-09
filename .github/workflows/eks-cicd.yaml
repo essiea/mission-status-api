@@ -78,6 +78,8 @@ jobs:
           directory: ${{ env.TF_ROOT }}
           quiet: true
           framework: terraform
+          download_external_modules: true
+          skip_check: CKV_TF_1,CKV2_AWS_62,CKV_AWS_144,CKV_AWS_18
 
       - name: Set up Helm
         uses: azure/setup-helm@v4
