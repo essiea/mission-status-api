@@ -4,7 +4,7 @@ image:
   tag: "d0e1ee0"
   pullPolicy: IfNotPresent
 service:
-  type: LoadBalancer
+  type: ClusterIp
   port: 80
   targetPort: 8080
 resources:
@@ -18,11 +18,16 @@ env:
   ENV: dev
   APP_VERSION: "d0e1ee0"
 ingress:
-  enabled: false
+  enabled: true
   className: alb
-  annotations: {}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:163895578832:certificate/7c9cf695-5f2c-4144-b7a4-1ffb22126e4c
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
   hosts:
-    - host: mission-status.example.com
+    - host: app.kanedata.net
       paths:
         - path: /
           pathType: Prefix
