@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: 163895578832.dkr.ecr.us-east-1.amazonaws.com/mission-status-api
-  tag: "8e4c040"
+  tag: "24a2caa"
   pullPolicy: IfNotPresent
 service:
   type: LoadBalancer 
@@ -16,7 +16,7 @@ resources:
     memory: 256Mi
 env:
   ENV: dev
-  APP_VERSION: "8e4c040"
+  APP_VERSION: "24a2caa"
 ingress:
   enabled: false
   className: alb
@@ -29,8 +29,5 @@ ingress:
 serviceAccount:
   create: true
   name: ""
-<<<<<<< HEAD
-=======
 
 fullnameOverride: mission-status-api
->>>>>>> bda19ae (Expose mission-status-api with LoadBalancer service)
