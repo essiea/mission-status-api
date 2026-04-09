@@ -8,9 +8,8 @@ module "eks" {
   subnet_ids = var.subnet_ids
   vpc_id     = var.vpc_id
 
-  cluster_endpoint_public_access       = true
-  cluster_endpoint_private_access      = true
-  cluster_endpoint_public_access_cidrs = ["44.220.154.169/32"]
+  cluster_endpoint_public_access  = false
+  cluster_endpoint_private_access = true
 
   cluster_enabled_log_types = [
     "api",
