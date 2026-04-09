@@ -1,10 +1,10 @@
 replicaCount: 2
 image:
   repository: 163895578832.dkr.ecr.us-east-1.amazonaws.com/mission-status-api
-  tag: "24a2caa"
+  tag: "28db14a"
   pullPolicy: IfNotPresent
 service:
-  type: LoadBalancer 
+  type: LoadBalancer
   port: 80
   targetPort: 8080
 resources:
@@ -16,7 +16,7 @@ resources:
     memory: 256Mi
 env:
   ENV: dev
-  APP_VERSION: "24a2caa"
+  APP_VERSION: "28db14a"
 ingress:
   enabled: false
   className: alb
@@ -29,5 +29,4 @@ ingress:
 serviceAccount:
   create: true
   name: ""
-
 fullnameOverride: mission-status-api
