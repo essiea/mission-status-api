@@ -1,5 +1,5 @@
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
+  source  = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v20.24.2"
   version = "20.24.2"
 
   cluster_name    = var.cluster_name
