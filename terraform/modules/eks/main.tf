@@ -8,8 +8,26 @@ module "eks" {
   subnet_ids = var.subnet_ids
   vpc_id     = var.vpc_id
 
-  cluster_endpoint_public_access  = true
-  cluster_endpoint_private_access = true
+  cluster_endpoint_public_access       = true
+  cluster_endpoint_private_access      = true
+  cluster_endpoint_public_access_cidrs = "44.220.154.169/32"
+
+  cluster_enabled_log_types = [
+    "api",
+    "audit",
+    "authenticator",
+    "controllerManager",
+    "scheduler"
+  ]
+
+  create_kms_key          = true
+  enable_kms_key_rotation = true
+  cluster_encryption_config = {
+    resources = ["secrets"]
+  }
+
+  create_cloudwatch_log_group            = true
+  cloudwatch_log_group_retention_in_days = 365
 
   enable_cluster_creator_admin_permissions = true
 
