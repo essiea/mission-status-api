@@ -3,9 +3,11 @@ import os
 
 app = FastAPI()
 
+
 @app.get("/")
 def root():
     return {"message": "mission-status-api is running"}
+
 
 @app.get("/health")
 def health():
