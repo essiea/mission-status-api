@@ -3,7 +3,7 @@ resource "aws_ecr_repository" "this" {
   image_tag_mutability = "MUTABLE"
 
   encryption_configuration {
-  encryption_type = "KMS"
+    encryption_type = "KMS"
   }
 
   image_scanning_configuration {
