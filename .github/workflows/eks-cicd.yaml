@@ -128,7 +128,7 @@ jobs:
           docker tag $IMAGE_REPO:${{ steps.meta.outputs.image_tag }} ${{ steps.login-ecr.outputs.registry }}/$IMAGE_REPO:${{ steps.meta.outputs.image_tag }}
 
       - name: Trivy image scan
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@naster
         with:
           image-ref: ${{ steps.login-ecr.outputs.registry }}/${{ env.IMAGE_REPO }}:${{ steps.meta.outputs.image_tag }}
           format: table
