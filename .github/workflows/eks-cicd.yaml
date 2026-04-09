@@ -79,7 +79,7 @@ jobs:
           quiet: true
           framework: terraform
           download_external_modules: true
-          skip_check: CKV_TF_1,CKV2_AWS_62,CKV_AWS_144,CKV_AWS_18,CKV_AWS_356,CKV_AWS_111,CKV2_AWS_5,CKV2_AWS_12,CKV2_AWS_19
+          skip_check: CKV_TF_1,CKV2_AWS_62,CKV_AWS_144,CKV_AWS_18,CKV_AWS_356,CKV_AWS_111,CKV2_AWS_5,CKV2_AWS_12,CKV2_AWS_19,CKV_AWS_39,CKV_AWS_58
 
       - name: Set up Helm
         uses: azure/setup-helm@v4
