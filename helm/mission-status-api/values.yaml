@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: 163895578832.dkr.ecr.us-east-1.amazonaws.com/mission-status-api
-  tag: "df5ceb4"
+  tag: "1d3bd8e"
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
@@ -16,7 +16,7 @@ resources:
     memory: 256Mi
 env:
   ENV: dev
-  APP_VERSION: "df5ceb4"
+  APP_VERSION: "1d3bd8e"
 ingress:
   enabled: false
   className: alb
