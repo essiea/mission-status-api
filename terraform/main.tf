@@ -36,12 +36,3 @@ module "aws_load_balancer_controller" {
   aws_region                = var.aws_region
   vpc_id                    = module.vpc.vpc_id
 }
-module "acm_route53" {
-  source = "./modules/acm-route53"
-
-  domain_name      = "app.kanedata.net"
-  hosted_zone_name = "kanedata.net"
-
-  alb_dns_name = module.app_ingress.alb_dns_name
-  alb_zone_id  = module.app_ingress.alb_zone_id
-}

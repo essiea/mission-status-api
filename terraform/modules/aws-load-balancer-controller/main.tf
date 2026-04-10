@@ -1,9 +1,3 @@
-data "aws_caller_identity" "current" {}
-
-data "tls_certificate" "oidc" {
-  url = var.cluster_oidc_issuer_url
-}
-
 resource "aws_iam_policy" "this" {
   name        = "${var.cluster_name}-aws-load-balancer-controller"
   description = "IAM policy for AWS Load Balancer Controller"
@@ -45,7 +39,7 @@ resource "aws_iam_role_policy_attachment" "this" {
   policy_arn = aws_iam_policy.this.arn
 }
 
-resource "kubernetes_service_account" "this" {
+resource "kubernetes_service_account_v1" "this" {
   metadata {
     name      = "aws-load-balancer-controller"
     namespace = "kube-system"
@@ -61,33 +55,20 @@ resource "helm_release" "this" {
   chart      = "aws-load-balancer-controller"
   namespace  = "kube-system"
 
-  set {
-    name  = "clusterName"
-    value = var.cluster_name
-  }
-
-  set {
-    name  = "serviceAccount.create"
-    value = "false"
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
-  }
-
-  set {
-    name  = "region"
-    value = var.aws_region
-  }
-
-  set {
-    name  = "vpcId"
-    value = var.vpc_id
-  }
+  values = [
+    yamlencode({
+      clusterName = var.cluster_name
+      serviceAccount = {
+        create = false
+        name   = "aws-load-balancer-controller"
+      }
+      region = var.aws_region
+      vpcId  = var.vpc_id
+    })
+  ]
 
   depends_on = [
     aws_iam_role_policy_attachment.this,
-    kubernetes_service_account.this
+    kubernetes_service_account_v1.this
   ]
 }

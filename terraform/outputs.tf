@@ -21,8 +21,3 @@ output "cluster_security_group_id" {
 output "ecr_repository_url" {
   value = module.ecr.repository_url
 }
-
-output "app_certificate_arn" {
-  value = module.acm_route53.certificate_arn
-}
-
