@@ -4,7 +4,7 @@ image:
   tag: "1bcba8f"
   pullPolicy: IfNotPresent
 service:
-  type: ClusterIp
+  type: ClusterIP
   port: 80
   targetPort: 8080
 resources:
