@@ -1,8 +1,14 @@
-name: EKS CI/CD
+name: AWS EKS CI/CD
 
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - "app/**"
+      - "helm/**"
+      - "terraform/**"
+      - ".github/workflows/aws-*.yaml"
+
   push:
     branches: [ main ]
   workflow_dispatch:
