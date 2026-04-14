@@ -13,6 +13,42 @@ This project is designed to mirror the exact responsibilities of an AWS / EKS / 
 - Structure Terraform cleanly for **dev / stage / prod** deployments
 
 ## Architecture
+
+```mermaid
+flowchart LR
+    Dev[Developer Pushes Code] --> GH[GitHub Repository]
+
+    subgraph GitHub Actions
+      GH --> CI[Validate + Build + Scan]
+      CI --> AWSPush[Push Image to Amazon ECR]
+      CI --> GCPPush[Push Image to Artifact Registry]
+      AWSPush --> AWSDeploy[Deploy to EKS with Helm]
+      GCPPush --> GCPDeploy[Deploy to GKE with Helm]
+    end
+
+    subgraph AWS
+      TF1[Terraform] --> VPC[VPC]
+      TF1 --> EKS[EKS Cluster]
+      TF1 --> ECR[ECR Repository]
+      TF1 --> LBC[AWS Load Balancer Controller]
+      AWSDeploy --> EKS
+      EKS --> ALB[Application Load Balancer]
+      ACM[ACM Certificate] --> ALB
+      R53[Route 53] --> ALB
+      ALB --> AWSApp[mission-status-api]
+    end
+
+    subgraph GCP
+      TF2[Terraform] --> VPC2[VPC Network]
+      TF2 --> GKE[GKE Cluster]
+      TF2 --> AR[Artifact Registry]
+      GCPDeploy --> GKE
+      GKE --> GLB[GKE Ingress / Google Load Balancer]
+      MC[ManagedCertificate] --> GLB
+      DNS[Cloud DNS or External DNS] --> GLB
+      GLB --> GCPApp[mission-status-api]
+    end
+
 ```text
 Developer Commit
       |

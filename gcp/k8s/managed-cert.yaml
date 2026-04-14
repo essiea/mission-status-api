@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: mission-status-cert
+  namespace: mission-status
+spec:
+  domains:
+    - app.kanedata.net

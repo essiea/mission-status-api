@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mission-status-api
+  namespace: mission-status
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/managed-certificates: "mission-status-cert"
+spec:
+  rules:
+    - host: app.kanedata.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mission-status-api
+                port:
+                  number: 80
