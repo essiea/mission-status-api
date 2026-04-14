@@ -1,3 +1,5 @@
+#checkov:skip=CKV_AWS_109: KMS key policies require resource "*" for the key policy document; actions are explicitly restricted to key administration only.
+
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "kms_key_policy" {
