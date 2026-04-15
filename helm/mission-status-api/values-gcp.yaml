@@ -21,6 +21,11 @@ resources:
 env:
   ENV: gcp
   APP_VERSION: "latest"
+  APP_NAME: "Mission Status API"
+  CLOUD_PROVIDER: "gcp"
+  CLOUD_REGION: "us-east1"
+  CLUSTER_NAME: "mission-status-gke"
+  DEPLOYED_AT: "pipeline-managed"
 
 ingress:
   enabled: false

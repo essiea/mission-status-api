@@ -28,6 +28,29 @@ data "aws_iam_policy_document" "kms_key_policy" {
       "kms:CancelKeyDeletion"
     ]
     resources = ["*"]
+
+  }
+
+  statement {
+    sid    = "AllowEc2RoleToUseKey"
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ec2InstanceProfileRole"
+      ]
+    }
+
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["*"]
   }
 }
 

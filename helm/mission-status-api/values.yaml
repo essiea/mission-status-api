@@ -16,7 +16,12 @@ resources:
     memory: 256Mi
 env:
   ENV: dev
-  APP_VERSION: "823b34c"
+  APP_VERSION: "latest"
+  APP_NAME: "Mission Status API"
+  CLOUD_PROVIDER: "aws"
+  CLOUD_REGION: "us-east-1"
+  CLUSTER_NAME: "mission-status-dev-eks"
+  DEPLOYED_AT: "pipeline-managed"
 ingress:
   enabled: true
   className: alb
