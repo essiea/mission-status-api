@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ app_name }}</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.14);
+      --text: #f5f7fb;
+      --muted: #b8c0d4;
+      --accent: #6ea8fe;
+      --accent-2: #7ef0c6;
+      --success: #22c55e;
+      --warn: #f59e0b;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(110,168,254,0.25), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.15), transparent 30%),
+        linear-gradient(135deg, #0b1020 0%, #11182d 50%, #0d1326 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1120px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.12);
+      color: #c9f7d7;
+      border: 1px solid rgba(34,197,94,0.25);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(34,197,94,0.7);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 36px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 720px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .cloud-tag {
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(110,168,254,0.1);
+      border: 1px solid rgba(110,168,254,0.28);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      padding: 28px;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 18px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .value {
+      font-size: 18px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .links {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .link {
+      text-decoration: none;
+      color: var(--text);
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.2s;
+    }
+
+    .link:hover {
+      background: rgba(110,168,254,0.1);
+      border-color: rgba(110,168,254,0.4);
+      transform: translateY(-2px);
+    }
+
+    .status-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .status-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .status-ok {
+      color: #c9f7d7;
+      background: rgba(34,197,94,0.12);
+      border-color: rgba(34,197,94,0.25);
+    }
+
+    .status-warn {
+      color: #fde7b0;
+      background: rgba(245,158,11,0.12);
+      border-color: rgba(245,158,11,0.25);
+    }
+
+    .footer {
+      padding: 0 28px 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .header {
+        flex-direction: column;
+      }
+
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div>
+        <div class="badge">
+          <span class="dot"></span>
+          Live Service
+        </div>
+        <h1>{{ app_name }}</h1>
+        <p class="subtitle">
+          Production-style multi-cloud service dashboard with live operational checks,
+          deployment metadata, and quick API access.
+        </p>
+      </div>
+
+      <div class="cloud-tag">
+        Active Target: <strong>{{ cloud_provider|upper }}</strong>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="panel">
+        <h2>Deployment Metadata</h2>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="label">Cloud Provider</div>
+            <div class="value">{{ cloud_provider|upper }}</div>
+          </div>
+
+          <div class="meta-item">
+            <div class="label">Environment</div>
+            <div class="value">{{ env }}</div>
+          </div>
+
+          <div class="meta-item">
+            <div class="label">Region</div>
+            <div class="value">{{ cloud_region }}</div>
+          </div>
+
+          <div class="meta-item">
+            <div class="label">Cluster</div>
+            <div class="value">{{ cluster_name }}</div>
+          </div>
+
+          <div class="meta-item">
+            <div class="label">Version</div>
+            <div class="value" id="versionValue">{{ version }}</div>
+          </div>
+
+          <div class="meta-item">
+            <div class="label">Deployed At</div>
+            <div class="value">{{ deployed_at }}</div>
+          </div>
+        </div>
+
+        <h2 style="margin-top: 22px;">API Endpoints</h2>
+        <div class="links">
+          <a href="/health" class="link"><span>/health</span><span>→</span></a>
+          <a href="/status" class="link"><span>/status</span><span>→</span></a>
+          <a href="/version" class="link"><span>/version</span><span>→</span></a>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Live Status</h2>
+        <div class="status-list">
+          <div class="status-row">
+            <span>Health Endpoint</span>
+            <span id="healthStatus" class="status-pill status-warn">Checking...</span>
+          </div>
+
+          <div class="status-row">
+            <span>Service Status</span>
+            <span id="serviceStatus" class="status-pill status-warn">Checking...</span>
+          </div>
+
+          <div class="status-row">
+            <span>Cloud Target</span>
+            <span id="cloudStatus" class="status-pill status-ok">{{ cloud_provider|upper }}</span>
+          </div>
+
+          <div class="status-row">
+            <span>Cluster</span>
+            <span id="clusterStatus" class="status-pill status-ok">{{ cluster_name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      This dashboard is intentionally lightweight so it can be deployed unchanged across AWS EKS and GCP GKE.
+    </div>
+  </div>
+
+  <script>
+    async function refreshDashboard() {
+      try {
+        const [healthResp, statusResp, versionResp] = await Promise.all([
+          fetch('/health'),
+          fetch('/status'),
+          fetch('/version')
+        ]);
+
+        const healthData = await healthResp.json();
+        const statusData = await statusResp.json();
+        const versionData = await versionResp.json();
+
+        const healthEl = document.getElementById('healthStatus');
+        const serviceEl = document.getElementById('serviceStatus');
+        const cloudEl = document.getElementById('cloudStatus');
+        const clusterEl = document.getElementById('clusterStatus');
+        const versionEl = document.getElementById('versionValue');
+
+        healthEl.textContent = healthData.status === 'ok' ? 'Healthy' : 'Degraded';
+        healthEl.className = healthData.status === 'ok'
+          ? 'status-pill status-ok'
+          : 'status-pill status-warn';
+
+        serviceEl.textContent = statusData.status || 'Unknown';
+        serviceEl.className = statusData.status === 'running'
+          ? 'status-pill status-ok'
+          : 'status-pill status-warn';
+
+        cloudEl.textContent = (statusData.cloud_provider || '{{ cloud_provider }}').toUpperCase();
+        clusterEl.textContent = statusData.cluster || '{{ cluster_name }}';
+        versionEl.textContent = versionData.version || '{{ version }}';
+      } catch (error) {
+        const healthEl = document.getElementById('healthStatus');
+        const serviceEl = document.getElementById('serviceStatus');
+        healthEl.textContent = 'Unavailable';
+        serviceEl.textContent = 'Unavailable';
+        healthEl.className = 'status-pill status-warn';
+        serviceEl.className = 'status-pill status-warn';
+      }
+    }
+
+    refreshDashboard();
+    setInterval(refreshDashboard, 10000);
+  </script>
+</body>
+</html>
