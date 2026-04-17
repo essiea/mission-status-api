@@ -2,7 +2,7 @@ replicaCount: 2
 image:
   repository: 163895578832.dkr.ecr.us-east-1.amazonaws.com/mission-status-api
   tag: "823b34c"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 service:
   type: ClusterIP
   port: 80
