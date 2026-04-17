@@ -23,8 +23,9 @@ DEPLOYED_AT = os.getenv(
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
     return templates.TemplateResponse(
-        "index.html",
-        {
+        request=request,
+        name="index.html",
+        context={
             "request": request,
             "app_name": APP_NAME,
             "env": APP_ENV,
