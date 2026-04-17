@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI(title="Mission Status API", version="1.0.0")
-templates = Jinja2Templates(directory="app/templates")
+templates = Jinja2Templates(directory="templates")
 
 APP_NAME = os.getenv("APP_NAME", "Mission Status API")
 APP_ENV = os.getenv("ENV", "unknown")
