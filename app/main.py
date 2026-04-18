@@ -1,6 +1,13 @@
 import os
 from datetime import datetime, timezone
 
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+app = FastAPI(title="Mission Status API", version="1.0.0")
+templates = Jinja2Templates(directory="templates")
+
 APP_NAME = os.getenv("APP_NAME", "Mission Status API")
 APP_ENV = os.getenv("ENV", "unknown")
 APP_VERSION = os.getenv("APP_VERSION", "1.0.0")
@@ -11,13 +18,6 @@ DEPLOYED_AT = os.getenv(
     "DEPLOYED_AT",
     datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
 )
-
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-
-app = FastAPI(title="Mission Status API", version="1.0.0")
-templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
