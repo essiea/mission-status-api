@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ app_name }}</title>
+</head>
+<body>
+  <h1>{{ app_name }}</h1>
+  <p>Environment: {{ env }}</p>
+  <p>Version: {{ version }}</p>
+  <p>Cloud: {{ cloud_provider }}</p>
+  <p>Region: {{ cloud_region }}</p>
+  <p>Cluster: {{ cluster_name }}</p>
+  <p>Deployed: {{ deployed_at }}</p>
+  <ul>
+    <li><a href="/health">/health</a></li>
+    <li><a href="/status">/status</a></li>
+    <li><a href="/version">/version</a></li>
+  </ul>
+</body>
+</html>
