@@ -1,6 +1,17 @@
 import os
 from datetime import datetime, timezone
 
+APP_NAME = os.getenv("APP_NAME", "Mission Status API")
+APP_ENV = os.getenv("ENV", "unknown")
+APP_VERSION = os.getenv("APP_VERSION", "1.0.0")
+CLOUD_PROVIDER = os.getenv("CLOUD_PROVIDER", "unknown")
+CLOUD_REGION = os.getenv("CLOUD_REGION", "unknown")
+CLUSTER_NAME = os.getenv("CLUSTER_NAME", "unknown")
+DEPLOYED_AT = os.getenv(
+    "DEPLOYED_AT",
+    datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
+)
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
