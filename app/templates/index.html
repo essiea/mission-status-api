@@ -6,131 +6,156 @@
   <title>{{ app_name }}</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.14);
-      --text: #f5f7fb;
-      --muted: #b8c0d4;
-      --accent: #6ea8fe;
-      --accent-2: #7ef0c6;
-      --success: #22c55e;
-      --warn: #f59e0b;
-      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --bg-1: #0f172a;
+      --bg-2: #111827;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel-strong: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --blue: #60a5fa;
+      --cyan: #22d3ee;
+      --green: #34d399;
+      --purple: #a78bfa;
+      --yellow: #fbbf24;
+      --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      color: var(--text);
       min-height: 100vh;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(110,168,254,0.25), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(34,197,94,0.15), transparent 30%),
-        linear-gradient(135deg, #0b1020 0%, #11182d 50%, #0d1326 100%);
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.22), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 211, 238, 0.18), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(167, 139, 250, 0.16), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      padding: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
     }
 
-    .card {
+    .shell {
       width: 100%;
-      max-width: 1120px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
+      max-width: 1200px;
+      border-radius: 28px;
       overflow: hidden;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
     }
 
-    .header {
-      padding: 36px;
+    .hero {
+      padding: 34px 34px 18px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
       display: flex;
       justify-content: space-between;
       gap: 20px;
-      align-items: flex-start;
+      flex-wrap: wrap;
     }
 
-    .badge {
+    .hero-left {
+      max-width: 760px;
+    }
+
+    .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 7px 14px;
+      gap: 10px;
+      padding: 8px 16px;
       border-radius: 999px;
-      background: rgba(34,197,94,0.12);
-      color: #c9f7d7;
-      border: 1px solid rgba(34,197,94,0.25);
+      background: rgba(52, 211, 153, 0.12);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      color: #dcfce7;
       font-size: 14px;
-      margin-bottom: 16px;
+      font-weight: 700;
+      margin-bottom: 18px;
     }
 
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: var(--success);
+    .pulse {
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      box-shadow: 0 0 8px rgba(34,197,94,0.7);
+      background: var(--green);
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.9);
     }
 
     h1 {
-      margin: 0 0 10px;
-      font-size: 36px;
+      margin: 0 0 12px;
+      font-size: 42px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
 
     .subtitle {
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 720px;
-      line-height: 1.6;
       margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
     }
 
-    .cloud-tag {
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: rgba(110,168,254,0.1);
-      border: 1px solid rgba(110,168,254,0.28);
-      font-size: 14px;
-      white-space: nowrap;
+    .hero-card {
+      min-width: 250px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.16), rgba(34, 211, 238, 0.08));
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      align-self: flex-start;
     }
 
-    .content {
+    .hero-card .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .hero-card .value {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      padding: 28px;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      padding: 26px 34px 34px;
     }
 
     .panel {
-      background: rgba(255,255,255,0.04);
+      background: var(--panel);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
+      border-radius: 22px;
       padding: 22px;
     }
 
     .panel h2 {
-      margin: 0 0 16px;
-      font-size: 18px;
+      margin: 0 0 18px;
+      font-size: 20px;
     }
 
-    .meta-grid {
+    .stats {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      gap: 14px;
     }
 
-    .meta-item {
-      background: rgba(255,255,255,0.04);
+    .stat {
+      border-radius: 18px;
+      padding: 16px;
+      background: var(--panel-strong);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 14px;
     }
 
-    .label {
+    .stat .k {
       font-size: 12px;
       color: var(--muted);
       text-transform: uppercase;
@@ -138,184 +163,238 @@
       margin-bottom: 8px;
     }
 
-    .value {
-      font-size: 18px;
-      font-weight: 700;
+    .stat .v {
+      font-size: 20px;
+      font-weight: 800;
       word-break: break-word;
     }
 
-    .links {
+    .cards {
       display: grid;
       gap: 12px;
-      margin-top: 12px;
     }
 
-    .link {
-      text-decoration: none;
-      color: var(--text);
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+    .endpoint {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: 0.2s;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: var(--panel-strong);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
 
-    .link:hover {
-      background: rgba(110,168,254,0.1);
-      border-color: rgba(110,168,254,0.4);
+    .endpoint:hover {
       transform: translateY(-2px);
+      border-color: rgba(96, 165, 250, 0.45);
+      background: rgba(96, 165, 250, 0.10);
     }
 
-    .status-list {
+    .endpoint-main {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .endpoint-sub {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .arrow {
+      font-size: 22px;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    .live-list {
       display: grid;
       gap: 12px;
     }
 
-    .status-row {
+    .live-item {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       gap: 12px;
       padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
+      border-radius: 16px;
+      background: var(--panel-strong);
       border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .status-pill {
-      padding: 6px 10px;
+    .live-pill {
+      padding: 7px 12px;
       border-radius: 999px;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       border: 1px solid transparent;
     }
 
-    .status-ok {
-      color: #c9f7d7;
-      background: rgba(34,197,94,0.12);
-      border-color: rgba(34,197,94,0.25);
+    .ok {
+      background: rgba(52, 211, 153, 0.12);
+      color: #dcfce7;
+      border-color: rgba(52, 211, 153, 0.25);
     }
 
-    .status-warn {
-      color: #fde7b0;
-      background: rgba(245,158,11,0.12);
-      border-color: rgba(245,158,11,0.25);
+    .warn {
+      background: rgba(251, 191, 36, 0.12);
+      color: #fef3c7;
+      border-color: rgba(251, 191, 36, 0.25);
     }
 
     .footer {
-      padding: 0 28px 28px;
+      padding: 0 34px 28px;
       color: var(--muted);
       font-size: 13px;
     }
 
-    @media (max-width: 900px) {
-      .header {
-        flex-direction: column;
+    .accent-blue { color: var(--blue); }
+    .accent-cyan { color: var(--cyan); }
+    .accent-purple { color: var(--purple); }
+    .accent-green { color: var(--green); }
+    .accent-yellow { color: var(--yellow); }
+
+    @media (max-width: 960px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 16px;
       }
 
-      .content {
+      .hero,
+      .grid {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .stats {
         grid-template-columns: 1fr;
       }
 
-      .meta-grid {
-        grid-template-columns: 1fr;
+      h1 {
+        font-size: 34px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="header">
-      <div>
-        <div class="badge">
-          <span class="dot"></span>
-          Live Service
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-left">
+        <div class="status-badge">
+          <span class="pulse"></span>
+          Platform Live and Healthy
         </div>
-        <h1>{{ app_name }}</h1>
+        <h1>
+          {{ app_name }}
+          <span class="accent-cyan">Dashboard</span>
+        </h1>
         <p class="subtitle">
-          Production-style multi-cloud service dashboard with live operational checks,
-          deployment metadata, and quick API access.
+          A polished multi-cloud application landing page built for Kubernetes deployment demos,
+          interview walkthroughs, and production-style platform presentations.
         </p>
       </div>
 
-      <div class="cloud-tag">
-        Active Target: <strong>{{ cloud_provider|upper }}</strong>
+      <div class="hero-card">
+        <div class="label">Active Deployment Target</div>
+        <div class="value">{{ cloud_provider|upper }}</div>
       </div>
-    </div>
+    </section>
 
-    <div class="content">
+    <section class="grid">
       <div class="panel">
-        <h2>Deployment Metadata</h2>
-        <div class="meta-grid">
-          <div class="meta-item">
-            <div class="label">Cloud Provider</div>
-            <div class="value">{{ cloud_provider|upper }}</div>
+        <h2>Deployment Overview</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="k">Environment</div>
+            <div class="v accent-blue">{{ env }}</div>
           </div>
-
-          <div class="meta-item">
-            <div class="label">Environment</div>
-            <div class="value">{{ env }}</div>
+          <div class="stat">
+            <div class="k">Version</div>
+            <div class="v accent-cyan" id="versionValue">{{ version }}</div>
           </div>
-
-          <div class="meta-item">
-            <div class="label">Region</div>
-            <div class="value">{{ cloud_region }}</div>
+          <div class="stat">
+            <div class="k">Cloud Provider</div>
+            <div class="v accent-purple">{{ cloud_provider|upper }}</div>
           </div>
-
-          <div class="meta-item">
-            <div class="label">Cluster</div>
-            <div class="value">{{ cluster_name }}</div>
+          <div class="stat">
+            <div class="k">Region</div>
+            <div class="v accent-green">{{ cloud_region }}</div>
           </div>
-
-          <div class="meta-item">
-            <div class="label">Version</div>
-            <div class="value" id="versionValue">{{ version }}</div>
+          <div class="stat">
+            <div class="k">Cluster</div>
+            <div class="v accent-yellow">{{ cluster_name }}</div>
           </div>
-
-          <div class="meta-item">
-            <div class="label">Deployed At</div>
-            <div class="value">{{ deployed_at }}</div>
+          <div class="stat">
+            <div class="k">Deployed At</div>
+            <div class="v">{{ deployed_at }}</div>
           </div>
         </div>
 
-        <h2 style="margin-top: 22px;">API Endpoints</h2>
-        <div class="links">
-          <a href="/health" class="link"><span>/health</span><span>→</span></a>
-          <a href="/status" class="link"><span>/status</span><span>→</span></a>
-          <a href="/version" class="link"><span>/version</span><span>→</span></a>
+        <h2 style="margin-top: 26px;">API Endpoints</h2>
+        <div class="cards">
+          <a class="endpoint" href="/health">
+            <div>
+              <div class="endpoint-main">/health</div>
+              <div class="endpoint-sub">Liveness and readiness probe endpoint</div>
+            </div>
+            <div class="arrow">→</div>
+          </a>
+
+          <a class="endpoint" href="/status">
+            <div>
+              <div class="endpoint-main">/status</div>
+              <div class="endpoint-sub">Operational metadata for this deployment</div>
+            </div>
+            <div class="arrow">→</div>
+          </a>
+
+          <a class="endpoint" href="/version">
+            <div>
+              <div class="endpoint-main">/version</div>
+              <div class="endpoint-sub">Current deployed application version</div>
+            </div>
+            <div class="arrow">→</div>
+          </a>
         </div>
       </div>
 
       <div class="panel">
-        <h2>Live Status</h2>
-        <div class="status-list">
-          <div class="status-row">
+        <h2>Live Service Signals</h2>
+        <div class="live-list">
+          <div class="live-item">
             <span>Health Endpoint</span>
-            <span id="healthStatus" class="status-pill status-warn">Checking...</span>
+            <span id="healthStatus" class="live-pill warn">Checking...</span>
           </div>
 
-          <div class="status-row">
+          <div class="live-item">
             <span>Service Status</span>
-            <span id="serviceStatus" class="status-pill status-warn">Checking...</span>
+            <span id="serviceStatus" class="live-pill warn">Checking...</span>
           </div>
 
-          <div class="status-row">
+          <div class="live-item">
             <span>Cloud Target</span>
-            <span id="cloudStatus" class="status-pill status-ok">{{ cloud_provider|upper }}</span>
+            <span id="cloudStatus" class="live-pill ok">{{ cloud_provider|upper }}</span>
           </div>
 
-          <div class="status-row">
+          <div class="live-item">
             <span>Cluster</span>
-            <span id="clusterStatus" class="status-pill status-ok">{{ cluster_name }}</span>
+            <span id="clusterStatus" class="live-pill ok">{{ cluster_name }}</span>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <div class="footer">
-      This dashboard is intentionally lightweight so it can be deployed unchanged across AWS EKS and GCP GKE.
+      Designed for interview presentation, demo walkthroughs, and production-style multi-cloud showcases.
     </div>
   </div>
 
@@ -340,24 +419,22 @@
 
         healthEl.textContent = healthData.status === 'ok' ? 'Healthy' : 'Degraded';
         healthEl.className = healthData.status === 'ok'
-          ? 'status-pill status-ok'
-          : 'status-pill status-warn';
+          ? 'live-pill ok'
+          : 'live-pill warn';
 
         serviceEl.textContent = statusData.status || 'Unknown';
         serviceEl.className = statusData.status === 'running'
-          ? 'status-pill status-ok'
-          : 'status-pill status-warn';
+          ? 'live-pill ok'
+          : 'live-pill warn';
 
         cloudEl.textContent = (statusData.cloud_provider || '{{ cloud_provider }}').toUpperCase();
         clusterEl.textContent = statusData.cluster || '{{ cluster_name }}';
         versionEl.textContent = versionData.version || '{{ version }}';
       } catch (error) {
-        const healthEl = document.getElementById('healthStatus');
-        const serviceEl = document.getElementById('serviceStatus');
-        healthEl.textContent = 'Unavailable';
-        serviceEl.textContent = 'Unavailable';
-        healthEl.className = 'status-pill status-warn';
-        serviceEl.className = 'status-pill status-warn';
+        document.getElementById('healthStatus').textContent = 'Unavailable';
+        document.getElementById('serviceStatus').textContent = 'Unavailable';
+        document.getElementById('healthStatus').className = 'live-pill warn';
+        document.getElementById('serviceStatus').className = 'live-pill warn';
       }
     }
 
