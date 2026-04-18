@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: 163895578832.dkr.ecr.us-east-1.amazonaws.com/mission-status-api
-  tag: "0a75b9f"
+  tag: "c09fe4a"
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
@@ -16,7 +16,7 @@ resources:
     memory: 256Mi
 env:
   ENV: dev
-  APP_VERSION: "0a75b9f"
+  APP_VERSION: "c09fe4a"
   APP_NAME: "Mission Status API"
   CLOUD_PROVIDER: "aws"
   CLOUD_REGION: "us-east-1"
