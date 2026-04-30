@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ app_name }}</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #111827;
+      --panel: #131c2e;
+      --panel-2: #182235;
+      --panel-3: #0f1729;
+      --border: rgba(148, 163, 184, 0.14);
+      --text: #f8fafc;
+      --muted: #aeb9cc;
+      --blue: #60a5fa;
+      --cyan: #22d3ee;
+      --green: #34d399;
+      --purple: #a78bfa;
+      --yellow: #fbbf24;
+      --pink: #f472b6;
+      --red: #fb7185;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 26%),
+        radial-gradient(circle at top right, rgba(167, 139, 250, 0.14), transparent 20%),
+        radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.12), transparent 22%),
+        linear-gradient(135deg, var(--bg) 0%, #0d1326 45%, var(--bg-2) 100%);
+      padding: 22px;
+    }
+
+    .app-shell {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 20px;
+    }
+
+    .hero, .side-panel, .panel {
+      background: linear-gradient(180deg, rgba(19, 28, 46, 0.98), rgba(15, 23, 41, 0.96));
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(96, 165, 250, 0.08), transparent 35%),
+        linear-gradient(180deg, transparent 60%, rgba(34, 211, 238, 0.05));
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 0.10);
+      border: 1px solid rgba(52, 211, 153, 0.22);
+      color: #dcfce7;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 46px;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+      max-width: 760px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .side-panel {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .side-title,
+    .panel-title {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .side-value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+
+    .ok {
+      background: rgba(52, 211, 153, 0.12);
+      color: #dcfce7;
+      border-color: rgba(52, 211, 153, 0.22);
+    }
+
+    .warn {
+      background: rgba(251, 191, 36, 0.12);
+      color: #fef3c7;
+      border-color: rgba(251, 191, 36, 0.22);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr 0.9fr;
+      gap: 20px;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .stat {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 15px;
+      min-height: 100px;
+    }
+
+    .stat-k {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .stat-v {
+      font-size: 20px;
+      font-weight: 800;
+      word-break: break-word;
+    }
+
+    .chart-card {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+    }
+
+    .chart-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .bars {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      gap: 6px;
+    }
+
+    .bar-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+    }
+
+    .bar-fill.green {
+      background: linear-gradient(90deg, #10b981, #34d399);
+    }
+
+    .bar-fill.purple {
+      background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+    }
+
+    .endpoint-list,
+    .signal-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .endpoint,
+    .signal {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 15px 16px;
+    }
+
+    .endpoint {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .endpoint:hover {
+      transform: translateY(-2px);
+      border-color: rgba(96, 165, 250, 0.32);
+      background: rgba(96, 165, 250, 0.08);
+    }
+
+    .endpoint-name {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .endpoint-desc {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .endpoint-arrow {
+      font-size: 22px;
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    .signal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .signal-name {
+      font-weight: 600;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding-bottom: 10px;
+    }
+
+    .blue { color: var(--blue); }
+    .cyan { color: var(--cyan); }
+    .green { color: var(--green); }
+    .purple { color: var(--purple); }
+    .yellow { color: var(--yellow); }
+    .pink { color: var(--pink); }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 14px;
+      }
+
+      .hero,
+      .side-panel,
+      .panel {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <section class="topbar">
+      <div class="hero">
+        <div class="badge">
+          <span class="pulse"></span>
+          Runtime Healthy
+        </div>
+
+        <h1>{{ app_name }} <span class="gradient">Observability Suite</span></h1>
+
+        <p class="hero-text">
+          A premium cloud-native service dashboard tailored for multi-cloud demos, technical interviews,
+          and platform engineering walkthroughs. This interface highlights deployment state, live signals,
+          and API visibility without changing infrastructure configuration.
+        </p>
+
+        <div class="hero-pills">
+          <span class="pill">Environment: {{ env }}</span>
+          <span class="pill">Cloud: {{ cloud_provider|upper }}</span>
+          <span class="pill">Region: {{ cloud_region }}</span>
+          <span class="pill">Cluster: {{ cluster_name }}</span>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div>
+          <div class="side-title">Primary Target</div>
+          <div class="side-value">{{ cloud_provider|upper }}</div>
+        </div>
+
+        <div>
+          <div class="side-title">Current Version</div>
+          <div class="side-value cyan" id="versionValue">{{ version }}</div>
+        </div>
+
+        <div>
+          <div class="side-title">Service State</div>
+          <span id="serviceStatusTop" class="status-chip warn">Checking...</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="panel-title">Deployment Metadata</div>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-k">Environment</div>
+            <div class="stat-v blue">{{ env }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-k">Cloud Provider</div>
+            <div class="stat-v purple">{{ cloud_provider|upper }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-k">Region</div>
+            <div class="stat-v green">{{ cloud_region }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-k">Cluster</div>
+            <div class="stat-v pink">{{ cluster_name }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-k">Version</div>
+            <div class="stat-v cyan">{{ version }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-k">Deploy Marker</div>
+            <div class="stat-v">{{ deployed_at }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Live Service Signals</div>
+        <div class="signal-list">
+          <div class="signal">
+            <span class="signal-name">Health Endpoint</span>
+            <span id="healthStatus" class="status-chip warn">Checking...</span>
+          </div>
+          <div class="signal">
+            <span class="signal-name">Application Status</span>
+            <span id="serviceStatus" class="status-chip warn">Checking...</span>
+          </div>
+          <div class="signal">
+            <span class="signal-name">Cloud Target</span>
+            <span id="cloudStatus" class="status-chip ok">{{ cloud_provider|upper }}</span>
+          </div>
+          <div class="signal">
+            <span class="signal-name">Cluster Binding</span>
+            <span id="clusterStatus" class="status-chip ok">{{ cluster_name }}</span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-label">Operational Indicators</div>
+          <div class="bars">
+            <div class="bar-row">
+              <div class="bar-top">
+                <span>Health Score</span>
+                <span id="healthScoreLabel">95%</span>
+              </div>
+              <div class="bar-track">
+                <div id="healthScoreBar" class="bar-fill green" style="width:95%"></div>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-top">
+                <span>Service Readiness</span>
+                <span id="serviceScoreLabel">92%</span>
+              </div>
+              <div class="bar-track">
+                <div id="serviceScoreBar" class="bar-fill" style="width:92%"></div>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-top">
+                <span>Deployment Confidence</span>
+                <span>100%</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill purple" style="width:100%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">API Navigation</div>
+        <div class="endpoint-list">
+          <a class="endpoint" href="/health">
+            <div>
+              <div class="endpoint-name">/health</div>
+              <div class="endpoint-desc">Kubernetes liveness and readiness probe</div>
+            </div>
+            <div class="endpoint-arrow">→</div>
+          </a>
+
+          <a class="endpoint" href="/status">
+            <div>
+              <div class="endpoint-name">/status</div>
+              <div class="endpoint-desc">Cloud, region, cluster, and service metadata</div>
+            </div>
+            <div class="endpoint-arrow">→</div>
+          </a>
+
+          <a class="endpoint" href="/version">
+            <div>
+              <div class="endpoint-name">/version</div>
+              <div class="endpoint-desc">Current deployed application version</div>
+            </div>
+            <div class="endpoint-arrow">→</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Premium interview-ready platform dashboard powered by Kubernetes, CI/CD, and multi-cloud DevOps.
+    </div>
+  </div>
+
+  <script>
+    async function refreshDashboard() {
+      try {
+        const [healthResp, statusResp, versionResp] = await Promise.all([
+          fetch('/health'),
+          fetch('/status'),
+          fetch('/version')
+        ]);
+
+        const healthData = await healthResp.json();
+        const statusData = await statusResp.json();
+        const versionData = await versionResp.json();
+
+        const healthy = healthData.status === 'ok';
+        const running = statusData.status === 'running';
+
+        document.getElementById('healthStatus').textContent = healthy ? 'Healthy' : 'Warning';
+        document.getElementById('healthStatus').className = healthy
+          ? 'status-chip ok'
+          : 'status-chip warn';
+
+        document.getElementById('serviceStatus').textContent = running ? 'Running' : 'Warning';
+        document.getElementById('serviceStatus').className = running
+          ? 'status-chip ok'
+          : 'status-chip warn';
+
+        document.getElementById('serviceStatusTop').textContent = running ? 'Running' : 'Warning';
+        document.getElementById('serviceStatusTop').className = running
+          ? 'status-chip ok'
+          : 'status-chip warn';
+
+        document.getElementById('cloudStatus').textContent =
+          (statusData.cloud_provider || '{{ cloud_provider }}').toUpperCase();
+
+        document.getElementById('clusterStatus').textContent =
+          statusData.cluster || '{{ cluster_name }}';
+
+        document.getElementById('versionValue').textContent =
+          versionData.version || '{{ version }}';
+
+        document.getElementById('healthScoreLabel').textContent = healthy ? '99%' : '70%';
+        document.getElementById('healthScoreBar').style.width = healthy ? '99%' : '70%';
+
+        document.getElementById('serviceScoreLabel').textContent = running ? '97%' : '68%';
+        document.getElementById('serviceScoreBar').style.width = running ? '97%' : '68%';
+      } catch (error) {
+        document.getElementById('healthStatus').textContent = 'Unavailable';
+        document.getElementById('serviceStatus').textContent = 'Unavailable';
+        document.getElementById('serviceStatusTop').textContent = 'Unavailable';
+
+        document.getElementById('healthStatus').className = 'status-chip warn';
+        document.getElementById('serviceStatus').className = 'status-chip warn';
+        document.getElementById('serviceStatusTop').className = 'status-chip warn';
+
+        document.getElementById('healthScoreLabel').textContent = '0%';
+        document.getElementById('serviceScoreLabel').textContent = '0%';
+        document.getElementById('healthScoreBar').style.width = '0%';
+        document.getElementById('serviceScoreBar').style.width = '0%';
+      }
+    }
+
+    refreshDashboard();
+    setInterval(refreshDashboard, 10000);
+  </script>
+</body>
+</html>
