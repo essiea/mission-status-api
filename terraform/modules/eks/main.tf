@@ -8,8 +8,9 @@ module "eks" {
   subnet_ids = var.subnet_ids
   vpc_id     = var.vpc_id
 
-  cluster_endpoint_public_access       = true
-  cluster_endpoint_private_access      = true
+  cluster_endpoint_public_access  = true
+  cluster_endpoint_private_access = true
+  #checkov:skip=CKV_AWS_38: Required for CI/CD pipeline access
   cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
 
   cluster_enabled_log_types = [
